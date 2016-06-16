@@ -1,0 +1,89 @@
+#!groovy
+
+node('master') {
+  stage 'build'
+  echo 'build'
+}
+
+node('master') {
+  stage 'publish'
+  echo 'publish'
+}
+
+stage concurrently:5, name: 'system and unit testing'
+parallel (
+  systemTesting: {
+    node('master') {
+        echo 'System Testing'
+        sleep 5
+    }
+  },
+  unitTesting: {
+    node('master') {
+      echo 'unit testing'
+      sleep 10
+    }
+  }
+)
+
+stage concurrently:5, name: 'browser testing'
+parallel (
+  firefoxTesting: {
+    node('master') {
+        echo 'firefox testing'
+        sleep 5
+    }
+  },
+  chromeTesting: {
+    node('master') {
+      echo 'chrome testing'
+      sleep 10
+    }
+  },
+  safariTesting: {
+    node('master') {
+      echo 'Safari'
+      sleep 5
+    }
+  },
+  IE8Testing: {
+    node('master') {
+      echo 'IE8'
+      sleep 5
+    }
+  },
+  EdgeTesting: {
+    node('master') {
+      echo 'Edge'
+      sleep 5
+    }
+  }
+)
+
+stage concurrently:5, name: 'mobile testing'
+parallel (
+  AndroidTesting: {
+    node('master') {
+      echo 'Android'
+      sleep 5
+    }
+  },
+  iOSTesting: {
+    node('master') {
+      echo 'iOS'
+      sleep 5
+    }
+  }
+)
+
+stage concurrent: 5, name: 'load testing'
+
+node('master') {
+  echo 'jmeter load testing'
+}
+
+stage concurrent: 5, name: 'Region testing'
+
+node('master') {
+  echo 'region testing'
+}

@@ -1,0 +1,78 @@
+#!groovy
+
+stage concurrently:1, name: 'unit and system testing'
+
+node('master') {
+  echo 'full unit testing'
+}
+node('master') {
+  echo 'system testing'
+}
+
+stage concurrently:5, name: 'browser and mobile testing'
+parallel (
+  firefoxTesting: {
+    node('master') {
+        echo 'firefox testing'
+        sleep 5
+    }
+  },
+  chromeTesting: {
+    node('master') {
+      echo 'chrome testing'
+      sleep 10
+    }
+  },
+  safariTesting: {
+    node('master') {
+      echo 'Safari'
+      sleep 5
+    }
+  },
+  IE8Testing: {
+    node('master') {
+      echo 'IE8'
+      sleep 5
+    }
+  },
+  EdgeTesting: {
+    node('master') {
+      echo 'Edge'
+      sleep 5
+    }
+  },
+  AndroidTesting: {
+    node('master') {
+      echo 'Android'
+      sleep 5
+    }
+  },
+  iOSTesting: {
+    node('master') {
+      echo 'iOS'
+      sleep 5
+    }
+  }
+)
+
+stage concurrent: 5, name: 'load testing'
+
+node('master') {
+  echo 'jmeter load testing'
+}
+
+stage concurrent: 5, name: 'API conformance testing'
+
+node('master') {
+  echo 'api conformance testing'
+}
+
+stage concurrent: 5, name:'security testing'
+node('master') {
+  echo 'security testing'
+}
+
+stage concurrent: 5, name: 'database migration testing'
+node('master') {
+  echo 'database migration'
+}
