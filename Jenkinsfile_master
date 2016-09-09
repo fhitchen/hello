@@ -2,7 +2,7 @@
 
 node('master') {
   stage 'checkout'
-  git branch: 'master', url: 'https://bitbucket.org/boise_devops_2016/hello.git'
+  git branch: 'master', url: 'https://github.com/fhitchen/hello.git'
   stage 'build'
   echo "build a simple job"
 }
